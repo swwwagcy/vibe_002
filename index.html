@@ -5,297 +5,356 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Event Dashboard 2025</title>
     
-    <!-- Google Fonts: 引入高品質字體 Inter (介面), JetBrains Mono (數據), Noto Sans (多語系) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* --- 核心色系：深邃 Cyberpunk 風格 --- */
             --bg-body: #0B0E14;
-            --surface-glass: rgba(30, 35, 48, 0.85); /* 毛玻璃背景 */
+            --surface-glass: rgba(30, 35, 48, 0.85);
             --surface-solid: #1C212E;
             --border-subtle: rgba(255, 255, 255, 0.12);
-            
-            /* --- 亮點色系 --- */
             --accent-gold: #FACC15;
             --accent-gold-dim: rgba(250, 204, 21, 0.15);
             --accent-gold-glow: rgba(250, 204, 21, 0.35);
-            
-            --accent-green: #34D399;
-            --accent-green-dim: rgba(52, 211, 153, 0.15);
-            
-            /* --- 文字系統 --- */
             --text-main: #FFFFFF;
             --text-muted: #9CA3AF;
             --text-dim: #6B7280;
-            --text-highlight: #F3F4F6;
-            
-            /* --- 介面變數 --- */
             --radius-lg: 24px;
             --radius-md: 16px;
-            --radius-sm: 10px;
         }
 
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
-            margin: 0;
-            padding: 20px 20px 80px 20px;
+            margin: 0; padding: 20px 20px 80px 20px;
             background-color: var(--bg-body);
-            font-family: 'Inter', 'Noto Sans TC', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
             color: var(--text-main);
-            /* 背景光暈特效 */
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(244, 63, 94, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 90% 90%, rgba(250, 204, 21, 0.08) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.08) 0%, transparent 50%);
             background-attachment: fixed;
             min-height: 100vh;
             font-size: 16px;
         }
 
-        .dashboard-container {
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 24px; 
-        }
-
-        /* --- Language Switcher --- */
-        .lang-switch-container {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            width: 100%;
-            z-index: 10;
-        }
-
+        .dashboard-container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+        
+        /* Language Switcher */
+        .lang-switch-container { display: flex; justify-content: flex-end; gap: 8px; }
         .lang-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-muted);
-            padding: 6px 12px;
-            border-radius: 14px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-muted); padding: 6px 12px; border-radius: 14px;
+            font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
         }
+        .lang-btn.active { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); font-weight: 800; }
 
-        .lang-btn:active { transform: scale(0.95); }
-        .lang-btn.active { 
-            background: var(--accent-gold); 
-            color: #000; 
-            border-color: var(--accent-gold); 
-            font-weight: 800; 
-            box-shadow: 0 0 10px var(--accent-gold-glow); 
-        }
-
-        /* --- Header --- */
+        /* Header */
         .promo-header { text-align: center; margin-bottom: 12px; }
         .promo-title { 
-            margin: 0 0 10px 0; 
-            font-size: 32px; 
-            font-weight: 900; 
+            margin: 0 0 10px 0; font-size: 32px; font-weight: 900; 
             background: linear-gradient(135deg, #FFF 40%, var(--accent-gold) 100%); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            letter-spacing: -0.5px; 
-            line-height: 1.2; 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; 
         }
-        .promo-subtitle { font-size: 14px; color: var(--text-muted); margin: 0 0 18px 0; line-height: 1.5; }
+        .promo-subtitle { font-size: 14px; color: var(--text-muted); margin: 0 0 10px 0; }
         .user-id-display {
-            display: inline-block;
-            background: rgba(255,255,255,0.05);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-dim);
-            margin-top: 8px;
+            display: inline-block; background: rgba(255,255,255,0.05); padding: 4px 10px;
+            border-radius: 20px; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-dim);
         }
 
-        /* --- Common Card Style --- */
+        /* Cards */
         .card { 
-            background: var(--surface-glass); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px); 
-            border: 1px solid var(--border-subtle); 
-            border-radius: var(--radius-lg); 
-            overflow: hidden; 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
-            animation: fadeIn 0.6s ease-out;
+            background: var(--surface-glass); backdrop-filter: blur(24px); 
+            border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); 
+            overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
+            padding: 20px;
         }
 
-        /* --- Hero Card (今日重點數據) --- */
-        .hero-card { 
-            padding: 28px 24px; 
-            text-align: center; 
-            background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%); 
-            border: 1px solid rgba(250, 204, 21, 0.3); 
-            box-shadow: 0 0 50px -10px rgba(250, 204, 21, 0.15); 
-        }
-        .hero-label { font-size: 14px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
-        
-        /* 核心數字樣式 */
-        .hero-value { 
-            font-size: 52px; 
-            font-weight: 800; 
-            color: var(--accent-gold); 
-            text-shadow: 0 0 30px var(--accent-gold-glow); 
-            margin: 0; 
-            line-height: 1; 
-            font-family: 'JetBrains Mono', monospace; 
-            letter-spacing: -2px; 
-        }
+        /* Hero */
+        .hero-card { text-align: center; background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%); border: 1px solid rgba(250, 204, 21, 0.3); }
+        .hero-label { font-size: 14px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
+        .hero-value { font-size: 52px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 30px var(--accent-gold-glow); font-family: 'JetBrains Mono', monospace; line-height: 1; }
 
-        /* --- Progress Bar --- */
-        .progress-section { margin-top: 28px; text-align: left; }
-        .progress-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        /* Progress */
+        .progress-section { margin-top: 24px; text-align: left; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); }
         .progress-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-        .progress-fill { 
-            height: 100%; 
-            background: linear-gradient(90deg, var(--accent-gold), #FFF); 
-            width: 0%; 
-            border-radius: 10px; 
-            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); 
-            box-shadow: 0 0 15px var(--accent-gold-glow); 
-        }
+        .progress-fill { height: 100%; background: var(--accent-gold); width: 0%; transition: width 1s; }
 
-        /* --- Tier List (等級表) --- */
-        .section-title { 
-            font-size: 18px; 
-            font-weight: 700; 
-            color: var(--text-highlight); 
-            margin-top: 24px; 
-            margin-bottom: 16px; 
-            padding-left: 12px; 
-            border-left: 4px solid var(--accent-gold); 
-            line-height: 1.2; 
-        }
-
-        .tier-list { display: flex; flex-direction: column; gap: 10px; }
-        .tier-item { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: var(--surface-solid); 
-            padding: 18px 20px; 
-            border-radius: var(--radius-sm); 
-            border: 1px solid transparent; 
-            transition: all 0.3s; 
-        }
-        /* 等級達成時的樣式 */
-        .tier-item.active { 
-            background: var(--accent-gold-dim); 
-            border-color: rgba(250, 204, 21, 0.4); 
-            transform: scale(1.01); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-        }
-        .tier-range { font-size: 14px; color: var(--text-muted); font-weight: 500; }
-        .tier-rate { 
-            font-size: 18px; 
-            font-weight: 800; 
-            color: var(--text-main); 
-            font-family: 'JetBrains Mono', monospace; 
-        }
+        /* Tier List */
+        .tier-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .tier-item { display: flex; justify-content: space-between; align-items: center; background: var(--surface-solid); padding: 16px; border-radius: 10px; border: 1px solid transparent; }
+        .tier-item.active { background: var(--accent-gold-dim); border-color: var(--accent-gold); }
+        .tier-rate { font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #FFF; }
         .tier-item.active .tier-rate { color: var(--accent-gold); }
 
-        /* --- History Table (下注紀錄) --- */
-        .history-card { 
-            padding: 0; 
-            border: 1px solid var(--border-subtle); 
-            border-radius: var(--radius-lg);
-            overflow: hidden; 
-            background: var(--surface-glass);
-        }
+        /* Table */
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .history-table th { text-align: left; color: var(--text-muted); font-size: 12px; padding: 10px; border-bottom: 1px solid var(--border-subtle); }
+        .history-table td { padding: 14px 10px; border-bottom: 1px solid var(--border-subtle); color: #FFF; font-size: 14px; }
+        .col-amount { text-align: right; font-family: 'JetBrains Mono', monospace; }
+        .rank-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; background: #333; }
+        .rank-A { background: var(--accent-gold); color: #000; }
+        .rank-B { background: rgba(255,255,255,0.2); }
 
-        .history-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 14px; 
-            text-align: left; 
-        }
+        /* Footer */
+        .footer-rules { margin-top: 30px; border-top: 1px solid var(--border-subtle); padding-top: 20px; color: var(--text-muted); font-size: 13px; line-height: 1.6; }
+        .rules-list { padding-left: 20px; margin: 10px 0; }
 
-        .history-table th { 
-            background: rgba(255, 255, 255, 0.03); 
-            color: var(--text-muted); 
-            font-weight: 600; 
-            padding: 14px 16px; 
-            font-size: 12px; 
-            text-transform: uppercase; 
-            border-bottom: 1px solid var(--border-subtle); 
-        }
-
-        .history-table td { 
-            padding: 16px 16px; 
-            border-bottom: 1px solid var(--border-subtle); 
-            color: var(--text-main); 
-            vertical-align: middle; 
-        }
-
-        .history-table tr:last-child td { border-bottom: none; }
-
-        .col-amount { 
-            text-align: right; 
-            font-family: 'JetBrains Mono', monospace; 
-            font-weight: 600; 
-            color: var(--text-highlight);
-            font-size: 15px;
-        }
-
-        /* 標籤樣式 */
-        .rank-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-left: 8px;
-            font-family: 'Inter', sans-serif;
-        }
-        .rank-A { background: var(--accent-gold); color: #000; box-shadow: 0 0 10px var(--accent-gold-dim); }
-        .rank-B { background: rgba(255,255,255,0.2); color: #FFF; }
-        .rank-C { background: rgba(255,255,255,0.1); color: var(--text-muted); }
-
-        /* --- Footer --- */
-        .footer-rules { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle); color: var(--text-muted); }
-        .footer-title { font-size: 13px; font-weight: 700; color: var(--text-dim); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
-        .rules-list { list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
-        .rules-list li { position: relative; padding-left: 16px; margin-bottom: 8px; }
-        .rules-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-dim); }
-        .copyright { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-dim); opacity: 0.6; }
-
-        /* --- Utilities --- */
-        .skeleton { 
-            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%); 
-            background-size: 200% 100%; 
-            animation: pulse 1.5s infinite; 
-            color: transparent !important; 
-            border-radius: 4px; 
-            display: inline-block;
-            min-width: 60px;
-        }
-        .error-box { 
-            text-align: center; padding: 20px; color: #ff6b6b; background: rgba(255, 50, 50, 0.05); 
-            border-radius: var(--radius-md); border: 1px dashed rgba(255, 50, 50, 0.2); font-size: 14px; 
-        }
-
-        @keyframes pulse { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Debug / Error */
+        .error-container { background: rgba(255, 50, 50, 0.1); border: 1px solid #ff5050; padding: 20px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 12px; color: #ffadad; word-break: break-all; }
+        .skeleton { color: transparent !important; background: rgba(255,255,255,0.1); border-radius: 4px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 
     <div class="dashboard-container">
-        <!-- 語言切換 -->
+        <!-- Language -->
         <div class="lang-switch-container">
             <button class="lang-btn active" onclick="app.setLang('zh-TW')">繁</button>
             <button class="lang-btn" onclick="app.setLang('zh-CN')">简</button>
             <button class="lang-btn" onclick="app.setLang('en')">EN</button>
-            <button class="lang-btn" onclick="app.setLang('jp')">JP</button>
         </div>
 
-        <!-- 標題區 -->
-        <header c
+        <!-- Header -->
+        <header class="promo-header">
+            <h1 class="promo-title" data-i18n="title">活動數據儀表板</h1>
+            <p class="promo-subtitle" data-i18n="subtitle">查詢每日下注數據</p>
+            <div id="userIdDisplay" class="user-id-display">Initializing...</div>
+        </header>
+
+        <!-- Error Box (Hidden by default) -->
+        <div id="error-box" style="display: none;"></div>
+
+        <!-- Main Content -->
+        <div id="main-content">
+            <div class="card hero-card">
+                <div class="hero-label" data-i18n="hero_label">📅 最新下注總額</div>
+                <div class="hero-value skeleton" id="val-bet-total">00,000</div>
+                
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span id="rank-status">Checking...</span>
+                        <span id="next-diff">---</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <section>
+                <div style="margin: 20px 0 10px 0; font-weight: 700; color:#FFF;" data-i18n="tier_title">🏆 等級門檻</div>
+                <div class="tier-list">
+                    <div class="tier-item" id="tier-A">
+                        <span style="font-size:14px; color:#aaa;" data-i18n="tier_a_range">當日 ≥ 20,000</span>
+                        <span class="tier-rate">Rank A</span>
+                    </div>
+                    <div class="tier-item" id="tier-B">
+                        <span style="font-size:14px; color:#aaa;" data-i18n="tier_b_range">當日 ≥ 10,000</span>
+                        <span class="tier-rate">Rank B</span>
+                    </div>
+                    <div class="tier-item" id="tier-C">
+                        <span style="font-size:14px; color:#aaa;" data-i18n="tier_c_range">當日 ≥ 5,000</span>
+                        <span class="tier-rate">Rank C</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div style="margin: 20px 0 10px 0; font-weight: 700; color:#FFF;" data-i18n="history_title">📅 每日明細</div>
+                <div class="card" style="padding: 0;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="table_date">日期</th>
+                                <th class="col-amount" data-i18n="table_amount">金額</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-tbody">
+                            <tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer-rules">
+            <div style="font-weight:700; margin-bottom:10px;" data-i18n="footer_title">ℹ️ 注意事項</div>
+            <ul class="rules-list">
+                <li data-i18n="rule_1">統計期間：11/30 ~ 12/02</li>
+                <li data-i18n="rule_2">數據每 1 分鐘更新一次</li>
+            </ul>
+        </footer>
+    </div>
+
+    <script>
+        // 1. 設定 API 網址 (已修正為您提供的網址)
+        const API_BASE = "https://bq-betting-api-905468082258.asia-east1.run.app";
+        
+        // 2. 測試用 User ID (來自您的 CSV 資料，若網址沒帶 ID 會使用此 ID 避免白畫面)
+        const DEMO_USER_ID = "58f6067b4e0c6b3b3e2f8215";
+
+        const fmt = (n) => new Intl.NumberFormat('en-US').format(n);
+        const TRANSLATIONS = {
+            'zh-TW': {
+                title: '活動數據儀表板', subtitle: '查詢每日下注數據與等級',
+                hero_label: '📅 最新單日下注', tier_title: '🏆 等級門檻',
+                tier_a_range: '當日 ≥ 20,000', tier_b_range: '當日 ≥ 10,000', tier_c_range: '當日 ≥ 5,000',
+                history_title: '📅 每日明細', table_date: '日期', table_amount: '下注總額',
+                footer_title: 'ℹ️ 注意事項', rule_1: '統計期間：11/30 ~ 12/02', rule_2: '數據每 1 分鐘更新一次',
+                rank_cur: '目前等級', rank_max: '已達最高', next_diff: '差 {n} 升級'
+            },
+            'zh-CN': {
+                title: '活动数据仪表板', subtitle: '查询每日下注数据与等级',
+                hero_label: '📅 最新单日下注', tier_title: '🏆 等级门槛',
+                tier_a_range: '当日 ≥ 20,000', tier_b_range: '当日 ≥ 10,000', tier_c_range: '当日 ≥ 5,000',
+                history_title: '📅 每日明细', table_date: '日期', table_amount: '下注总额',
+                footer_title: 'ℹ️ 注意事项', rule_1: '统计期间：11/30 ~ 12/02', rule_2: '数据每 1 分钟更新一次',
+                rank_cur: '当前等级', rank_max: '已达最高', next_diff: '差 {n} 升级'
+            },
+            'en': {
+                title: 'Event Dashboard', subtitle: 'Daily bets & Tier status',
+                hero_label: '📅 Latest Daily Bet', tier_title: '🏆 Tier Thresholds',
+                tier_a_range: 'Daily ≥ 20,000', tier_b_range: 'Daily ≥ 10,000', tier_c_range: 'Daily ≥ 5,000',
+                history_title: '📅 Daily Breakdown', table_date: 'Date', table_amount: 'Total Bet',
+                footer_title: 'ℹ️ Info', rule_1: 'Period: 11/30 ~ 12/02', rule_2: 'Data updates every minute',
+                rank_cur: 'Current Rank', rank_max: 'Max Tier', next_diff: '{n} to next'
+            }
+        };
+
+        const app = {
+            lang: 'zh-TW',
+            
+            setLang: (l) => {
+                app.lang = l;
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                const idx = ['zh-TW', 'zh-CN', 'en'].indexOf(l);
+                if(idx >=0) document.querySelectorAll('.lang-btn')[idx].classList.add('active');
+                
+                const t = TRANSLATIONS[l];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const k = el.getAttribute('data-i18n');
+                    if(t[k]) el.innerText = t[k];
+                });
+                if(window.lastData) app.render(window.lastData);
+            },
+
+            getUserId: () => {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('user_id')) return params.get('user_id');
+                const match = window.location.hash.match(/user_id=([a-fA-F0-9]{24})/);
+                if (match) return match[1];
+                
+                // *** 自動使用測試 ID ***
+                console.warn("No User ID found, using DEMO ID");
+                return DEMO_USER_ID; 
+            },
+
+            showError: (title, detail) => {
+                const box = document.getElementById('error-box');
+                box.style.display = 'block';
+                box.innerHTML = `<strong>⚠️ ${title}</strong><br>${detail}<br><br>API: ${API_BASE}`;
+                document.getElementById('main-content').style.opacity = '0.3';
+                document.getElementById('main-content').style.pointerEvents = 'none';
+                document.getElementById('userIdDisplay').style.color = 'red';
+                document.getElementById('userIdDisplay').innerText = "Error";
+            },
+
+            calcStatus: (amount) => {
+                if (amount >= 20000) return { pct: 100, next: 0, rank: 'A' };
+                if (amount >= 10000) return { pct: (amount/20000)*100, next: 20000 - amount, rank: 'B' };
+                if (amount >= 5000) return { pct: (amount/10000)*100, next: 10000 - amount, rank: 'C' };
+                return { pct: (amount/5000)*100, next: 5000 - amount, rank: 'N/A' };
+            },
+
+            render: (data) => {
+                window.lastData = data;
+                const t = TRANSLATIONS[app.lang];
+                const list = data.data || [];
+                
+                // Get latest data
+                const latest = list.length > 0 ? list[list.length - 1] : { total_bet: 0 };
+                const amount = latest.total_bet || 0;
+
+                // Hero Section
+                document.getElementById('val-bet-total').innerText = fmt(amount);
+                document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
+
+                // Progress
+                const st = app.calcStatus(amount);
+                document.getElementById('progress-bar').style.width = `${st.pct}%`;
+                document.getElementById('rank-status').innerText = `${t.rank_cur}: ${st.rank}`;
+                
+                const diffEl = document.getElementById('next-diff');
+                if (st.next <= 0) {
+                    diffEl.innerText = t.rank_max;
+                    diffEl.style.color = 'var(--accent-gold)';
+                } else {
+                    diffEl.innerText = t.next_diff.replace('{n}', fmt(st.next));
+                    diffEl.style.color = '#888';
+                }
+
+                // Tiers Highlight
+                document.querySelectorAll('.tier-item').forEach(el => el.classList.remove('active'));
+                if (amount >= 20000) document.getElementById('tier-A').classList.add('active');
+                else if (amount >= 10000) document.getElementById('tier-B').classList.add('active');
+                else if (amount >= 5000) document.getElementById('tier-C').classList.add('active');
+
+                // History Table
+                const tbody = document.getElementById('history-tbody');
+                tbody.innerHTML = '';
+                if (list.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">No Record</td></tr>`;
+                } else {
+                    [...list].reverse().forEach(row => {
+                        const tr = document.createElement('tr');
+                        const rSt = app.calcStatus(row.total_bet || 0);
+                        const badge = rSt.rank !== 'N/A' ? `<span class="rank-badge rank-${rSt.rank}">${rSt.rank}</span>` : '';
+                        tr.innerHTML = `<td>${row.date}</td><td class="col-amount">${fmt(row.total_bet)}${badge}</td>`;
+                        tbody.appendChild(tr);
+                    });
+                }
+            },
+
+            init: async () => {
+                app.setLang('zh-TW');
+                const userId = app.getUserId();
+                
+                if (userId === DEMO_USER_ID) {
+                    document.getElementById('userIdDisplay').innerText = `ID: Demo User`;
+                } else {
+                    document.getElementById('userIdDisplay').innerText = `ID: ${userId.substring(0,6)}...`;
+                }
+
+                try {
+                    // API Call
+                    const url = `${API_BASE}/?user_id=${userId}`;
+                    console.log("Fetching:", url);
+                    
+                    const res = await fetch(url, { method: 'GET', credentials: 'omit' });
+                    
+                    if (!res.ok) {
+                        throw new Error(`HTTP ${res.status}`);
+                    }
+                    
+                    const json = await res.json();
+                    if(json.error) {
+                        throw new Error(json.error);
+                    }
+                    
+                    app.render(json);
+
+                } catch (e) {
+                    console.error("Fetch Error:", e);
+                    app.showError("Connection Failed", e.message);
+                }
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>

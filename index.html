@@ -2,232 +2,380 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Event Dashboard 2025</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#050505">
+    <title>VIP Event Dashboard</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-body: #0B0E14;
-            --surface-glass: rgba(30, 35, 48, 0.85);
-            --surface-solid: #1C212E;
-            --border-subtle: rgba(255, 255, 255, 0.12);
-            --accent-gold: #FACC15;
-            --accent-gold-dim: rgba(250, 204, 21, 0.15);
-            --accent-gold-glow: rgba(250, 204, 21, 0.35);
-            --text-main: #FFFFFF;
-            --text-muted: #9CA3AF;
-            --text-dim: #6B7280;
-            --radius-lg: 24px;
-            --radius-md: 16px;
+            /* --- 核心色系：深邃黑金 --- */
+            --bg-body: #050505;
+            --surface-glass: rgba(20, 20, 25, 0.65);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --surface-highlight: rgba(255, 255, 255, 0.12);
+            
+            /* --- 品牌色 (流金) --- */
+            --gold-light: #FCEDA3;
+            --gold-main: #EAB308; /* Tailwind Yellow-500 */
+            --gold-dark: #A16207;
+            
+            /* --- 狀態色 --- */
+            --rank-a-bg: linear-gradient(135deg, #FCEDA3 0%, #EAB308 100%);
+            --rank-b-bg: rgba(255, 255, 255, 0.15);
+            --rank-c-bg: rgba(255, 255, 255, 0.08);
+            
+            /* --- 文字 --- */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA; /* Zinc-400 */
+            --text-tertiary: #52525B;  /* Zinc-600 */
+            
+            /* --- 尺寸 --- */
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --radius-md: 8px;
         }
 
-        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0; padding: 20px 20px 80px 20px;
+            margin: 0;
+            padding: 0;
+            padding-bottom: env(safe-area-inset-bottom, 20px);
             background-color: var(--bg-body);
             font-family: 'Inter', 'Noto Sans TC', sans-serif;
-            color: var(--text-main);
-            background-image: radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.08) 0%, transparent 50%);
-            background-attachment: fixed;
+            color: var(--text-primary);
             min-height: 100vh;
-            font-size: 16px;
+            overflow-x: hidden;
         }
 
-        .dashboard-container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
-        
-        /* Language Switcher */
-        .lang-switch-container { display: flex; justify-content: flex-end; gap: 8px; }
+        /* --- 背景特效 (Aurora Background) --- */
+        .bg-glow {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(234, 179, 8, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(234, 179, 8, 0.05) 0%, transparent 50%);
+            filter: blur(40px);
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 24px 20px 80px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* --- Language Switcher --- */
+        .lang-switch {
+            position: absolute; top: 20px; right: 20px; z-index: 50;
+            display: flex; gap: 6px;
+        }
         .lang-btn {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-muted); padding: 6px 12px; border-radius: 14px;
-            font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--surface-border);
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .lang-btn.active { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); font-weight: 800; }
-
-        /* Header */
-        .promo-header { text-align: center; margin-bottom: 12px; }
-        .promo-title { 
-            margin: 0 0 10px 0; font-size: 32px; font-weight: 900; 
-            background: linear-gradient(135deg, #FFF 40%, var(--accent-gold) 100%); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; 
-        }
-        .promo-subtitle { font-size: 14px; color: var(--text-muted); margin: 0 0 10px 0; }
-        .user-id-display {
-            display: inline-block; background: rgba(255,255,255,0.05); padding: 4px 10px;
-            border-radius: 20px; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-dim);
-        }
-
-        /* Cards */
-        .card { 
-            background: var(--surface-glass); backdrop-filter: blur(24px); 
-            border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); 
-            overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
-            padding: 20px;
+        .lang-btn.active {
+            background: var(--gold-main);
+            color: #000;
+            border-color: var(--gold-main);
+            box-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
+            transform: translateY(-1px);
         }
 
-        /* Hero */
-        .hero-card { text-align: center; background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%); border: 1px solid rgba(250, 204, 21, 0.3); }
-        .hero-label { font-size: 14px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
-        .hero-value { font-size: 52px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 30px var(--accent-gold-glow); font-family: 'JetBrains Mono', monospace; line-height: 1; }
+        /* --- Header --- */
+        .header { margin-top: 40px; margin-bottom: 12px; text-align: left; position: relative; }
+        .title {
+            font-size: 32px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.02em; line-height: 1.1;
+            /* 流金文字特效 */
+            background: linear-gradient(135deg, #FFFFFF 30%, var(--gold-light) 70%, var(--gold-main) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .subtitle { font-size: 14px; color: var(--text-secondary); margin: 0; font-weight: 400; }
+        
+        .user-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-top: 12px; padding: 4px 10px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border);
+            border-radius: 99px; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-secondary);
+        }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; animation: pulse-green 2s infinite; }
 
-        /* Progress */
-        .progress-section { margin-top: 24px; text-align: left; }
-        .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); }
-        .progress-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent-gold); width: 0%; transition: width 1s; }
+        /* --- Card System (Glassmorphism 2.0) --- */
+        .card {
+            background: var(--surface-glass);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--surface-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* 卡片頂部亮光線條，增加立體感 */
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
 
-        /* Tier List */
-        .tier-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-        .tier-item { display: flex; justify-content: space-between; align-items: center; background: var(--surface-solid); padding: 16px; border-radius: 10px; border: 1px solid transparent; }
-        .tier-item.active { background: var(--accent-gold-dim); border-color: var(--accent-gold); }
-        .tier-rate { font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #FFF; }
-        .tier-item.active .tier-rate { color: var(--accent-gold); }
+        /* --- Hero Section --- */
+        .hero-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-bottom: 8px; }
+        .hero-value-container { display: flex; align-items: baseline; gap: 4px; margin-bottom: 24px; }
+        .hero-value {
+            font-family: 'JetBrains Mono', monospace; font-size: 48px; font-weight: 800;
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(234, 179, 8, 0.15);
+        }
+        .hero-unit { font-size: 14px; color: var(--text-tertiary); font-weight: 600; transform: translateY(-8px); }
 
-        /* Table */
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .history-table th { text-align: left; color: var(--text-muted); font-size: 12px; padding: 10px; border-bottom: 1px solid var(--border-subtle); }
-        .history-table td { padding: 14px 10px; border-bottom: 1px solid var(--border-subtle); color: #FFF; font-size: 14px; }
-        .col-amount { text-align: right; font-family: 'JetBrains Mono', monospace; }
-        .rank-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; background: #333; }
-        .rank-A { background: var(--accent-gold); color: #000; }
-        .rank-B { background: rgba(255,255,255,0.2); }
+        /* --- Progress Bar --- */
+        .progress-box { position: relative; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary); }
+        .progress-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-fill {
+            height: 100%; width: 0%; border-radius: 10px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-main));
+            position: relative;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        /* 流光動畫 */
+        .progress-fill::after {
+            content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
 
-        /* Footer */
-        .footer-rules { margin-top: 30px; border-top: 1px solid var(--border-subtle); padding-top: 20px; color: var(--text-muted); font-size: 13px; line-height: 1.6; }
-        .rules-list { padding-left: 20px; margin: 10px 0; }
+        /* --- Tier List --- */
+        .section-title { font-size: 16px; font-weight: 700; margin: 8px 0 16px 0; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .section-icon { color: var(--gold-main); }
 
-        /* Debug / Error */
-        .error-container { background: rgba(255, 50, 50, 0.1); border: 1px solid #ff5050; padding: 20px; border-radius: 12px; text-align: left; font-family: monospace; font-size: 12px; color: #ffadad; word-break: break-all; }
-        .skeleton { color: transparent !important; background: rgba(255,255,255,0.1); border-radius: 4px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        .tier-list { display: flex; flex-direction: column; gap: 8px; }
+        .tier-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.03);
+            padding: 14px 18px; border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+        }
+        .tier-item.active {
+            background: rgba(234, 179, 8, 0.08);
+            border-color: rgba(234, 179, 8, 0.3);
+            box-shadow: inset 0 0 20px rgba(234, 179, 8, 0.05);
+        }
+        .tier-info { display: flex; flex-direction: column; gap: 2px; }
+        .tier-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+        .tier-req { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+        .tier-badge {
+            font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px;
+            background: rgba(255,255,255,0.05); color: var(--text-tertiary);
+        }
+        .tier-item.active .tier-badge {
+            background: var(--gold-main); color: #000; box-shadow: 0 2px 10px rgba(234, 179, 8, 0.3);
+        }
+
+        /* --- History Table --- */
+        .table-wrapper { margin: 0 -24px -24px -24px; } /* 讓表格貼齊卡片邊緣 */
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th {
+            text-align: left; font-size: 11px; text-transform: uppercase; color: var(--text-tertiary);
+            padding: 12px 24px; border-bottom: 1px solid var(--surface-border); font-weight: 600;
+        }
+        .history-table td {
+            padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.02);
+            color: var(--text-secondary); font-size: 14px;
+        }
+        .history-table tr:last-child td { border-bottom: none; }
+        .val-cell { text-align: right; font-family: 'JetBrains Mono', monospace; color: var(--text-primary); font-weight: 600; }
+        
+        .rank-tag-mini {
+            display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-left: 8px; vertical-align: middle;
+        }
+
+        /* --- Footer --- */
+        .footer { 
+            margin-top: 20px; border-top: 1px solid var(--surface-border); padding-top: 24px;
+            color: var(--text-tertiary); font-size: 12px; line-height: 1.6;
+        }
+        .footer ul { padding-left: 18px; margin: 12px 0; }
+        .footer li { margin-bottom: 6px; }
+
+        /* --- Skeleton & Animations --- */
+        @keyframes shimmer { 100% { transform: translateX(100%); } }
+        @keyframes pulse-green { 0% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } 50% { opacity: 1; box-shadow: 0 0 10px #10B981; } 100% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } }
+        
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+            background-size: 200% 100%; animation: shimmer 1.5s infinite;
+            color: transparent !important; border-radius: 4px; display: inline-block;
+        }
+        .error-toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(220, 38, 38, 0.9); color: white; padding: 12px 20px;
+            border-radius: 50px; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none; z-index: 100; backdrop-filter: blur(4px);
+        }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        <!-- Language -->
-        <div class="lang-switch-container">
-            <button class="lang-btn active" onclick="app.setLang('zh-TW')">繁</button>
-            <button class="lang-btn" onclick="app.setLang('zh-CN')">简</button>
-            <button class="lang-btn" onclick="app.setLang('en')">EN</button>
-        </div>
+    <div class="bg-glow"></div>
 
+    <!-- Language -->
+    <div class="lang-switch">
+        <button class="lang-btn active" onclick="app.setLang('zh-TW')">繁</button>
+        <button class="lang-btn" onclick="app.setLang('zh-CN')">简</button>
+        <button class="lang-btn" onclick="app.setLang('en')">EN</button>
+    </div>
+
+    <div class="container">
         <!-- Header -->
-        <header class="promo-header">
-            <h1 class="promo-title" data-i18n="title">活動數據儀表板</h1>
-            <p class="promo-subtitle" data-i18n="subtitle">查詢每日下注數據</p>
-            <div id="userIdDisplay" class="user-id-display">Initializing...</div>
+        <header class="header">
+            <h1 class="title" data-i18n="title">活動數據<br>儀表板</h1>
+            <p class="subtitle" data-i18n="subtitle">查詢每日下注數據與等級</p>
+            <div class="user-pill">
+                <div class="status-dot"></div>
+                <span id="userIdDisplay">Connecting...</span>
+            </div>
         </header>
 
-        <!-- Error Box (Hidden by default) -->
-        <div id="error-box" style="display: none;"></div>
-
-        <!-- Main Content -->
-        <div id="main-content">
-            <div class="card hero-card">
-                <div class="hero-label" data-i18n="hero_label">📅 最新下注總額</div>
+        <!-- Main Card -->
+        <div class="card">
+            <div class="hero-label" data-i18n="hero_label">📅 最新單日下注</div>
+            <div class="hero-value-container">
                 <div class="hero-value skeleton" id="val-bet-total">00,000</div>
-                
-                <div class="progress-section">
-                    <div class="progress-header">
-                        <span id="rank-status">Checking...</span>
-                        <span id="next-diff">---</span>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill" id="progress-bar"></div>
-                    </div>
-                </div>
+                <span class="hero-unit">PTS</span>
             </div>
 
-            <section>
-                <div style="margin: 20px 0 10px 0; font-weight: 700; color:#FFF;" data-i18n="tier_title">🏆 等級門檻</div>
-                <div class="tier-list">
-                    <div class="tier-item" id="tier-A">
-                        <span style="font-size:14px; color:#aaa;" data-i18n="tier_a_range">當日 ≥ 20,000</span>
-                        <span class="tier-rate">Rank A</span>
-                    </div>
-                    <div class="tier-item" id="tier-B">
-                        <span style="font-size:14px; color:#aaa;" data-i18n="tier_b_range">當日 ≥ 10,000</span>
-                        <span class="tier-rate">Rank B</span>
-                    </div>
-                    <div class="tier-item" id="tier-C">
-                        <span style="font-size:14px; color:#aaa;" data-i18n="tier_c_range">當日 ≥ 5,000</span>
-                        <span class="tier-rate">Rank C</span>
-                    </div>
+            <!-- Progress -->
+            <div class="progress-box">
+                <div class="progress-info">
+                    <span id="rank-status">Loading...</span>
+                    <span id="next-diff" style="color: var(--text-tertiary)">---</span>
                 </div>
-            </section>
-
-            <section>
-                <div style="margin: 20px 0 10px 0; font-weight: 700; color:#FFF;" data-i18n="history_title">📅 每日明細</div>
-                <div class="card" style="padding: 0;">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th data-i18n="table_date">日期</th>
-                                <th class="col-amount" data-i18n="table_amount">金額</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-tbody">
-                            <tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">Loading...</td></tr>
-                        </tbody>
-                    </table>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-bar"></div>
                 </div>
-            </section>
+            </div>
         </div>
 
-        <footer class="footer-rules">
-            <div style="font-weight:700; margin-bottom:10px;" data-i18n="footer_title">ℹ️ 注意事項</div>
-            <ul class="rules-list">
+        <!-- Tier List -->
+        <div>
+            <div class="section-title">
+                <span class="section-icon">🏆</span> 
+                <span data-i18n="tier_title">等級門檻</span>
+            </div>
+            <div class="tier-list">
+                <div class="tier-item" id="tier-A">
+                    <div class="tier-info">
+                        <span class="tier-name">Rank A</span>
+                        <span class="tier-req" data-i18n="tier_a_range">Daily ≥ 20,000</span>
+                    </div>
+                    <span class="tier-badge">A</span>
+                </div>
+                <div class="tier-item" id="tier-B">
+                    <div class="tier-info">
+                        <span class="tier-name">Rank B</span>
+                        <span class="tier-req" data-i18n="tier_b_range">Daily ≥ 10,000</span>
+                    </div>
+                    <span class="tier-badge">B</span>
+                </div>
+                <div class="tier-item" id="tier-C">
+                    <div class="tier-info">
+                        <span class="tier-name">Rank C</span>
+                        <span class="tier-req" data-i18n="tier_c_range">Daily ≥ 5,000</span>
+                    </div>
+                    <span class="tier-badge">C</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="card" style="padding: 24px 24px 0 24px;">
+            <div class="section-title" style="margin-top:0;">
+                <span class="section-icon">📅</span> 
+                <span data-i18n="history_title">每日明細</span>
+            </div>
+            <div class="table-wrapper">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="table_date">日期</th>
+                            <th style="text-align: right;" data-i18n="table_amount">金額</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <tr><td colspan="2" style="text-align:center; padding:30px; color:var(--text-tertiary);">Loading Data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <strong style="color:var(--text-secondary)" data-i18n="footer_title">ℹ️ 注意事項</strong>
+            <ul>
                 <li data-i18n="rule_1">統計期間：11/30 ~ 12/02</li>
                 <li data-i18n="rule_2">數據每 1 分鐘更新一次</li>
             </ul>
+            <div style="opacity: 0.4; text-align: center; margin-top: 20px;">ID: <span id="debug-id">--</span></div>
         </footer>
     </div>
 
+    <!-- Error Toast -->
+    <div id="error-toast" class="error-toast">Connection Error</div>
+
     <script>
-        // 1. 設定 API 網址 (已修正為您提供的網址)
         const API_BASE = "https://bq-betting-api-905468082258.asia-east1.run.app";
-        
-        // 2. 測試用 User ID (來自您的 CSV 資料，若網址沒帶 ID 會使用此 ID 避免白畫面)
-        const DEMO_USER_ID = "58f6067b4e0c6b3b3e2f8215";
+        const DEMO_ID = "58f6067b4e0c6b3b3e2f8215";
 
         const fmt = (n) => new Intl.NumberFormat('en-US').format(n);
+        
         const TRANSLATIONS = {
             'zh-TW': {
-                title: '活動數據儀表板', subtitle: '查詢每日下注數據與等級',
-                hero_label: '📅 最新單日下注', tier_title: '🏆 等級門檻',
-                tier_a_range: '當日 ≥ 20,000', tier_b_range: '當日 ≥ 10,000', tier_c_range: '當日 ≥ 5,000',
-                history_title: '📅 每日明細', table_date: '日期', table_amount: '下注總額',
+                title: '活動數據<br>儀表板', subtitle: '查詢每日下注數據與等級',
+                hero_label: '📅 最新單日下注',
+                tier_title: '等級門檻', tier_a_range: '當日 ≥ 20,000', tier_b_range: '當日 ≥ 10,000', tier_c_range: '當日 ≥ 5,000',
+                history_title: '每日明細', table_date: '日期', table_amount: '下注總額',
                 footer_title: 'ℹ️ 注意事項', rule_1: '統計期間：11/30 ~ 12/02', rule_2: '數據每 1 分鐘更新一次',
-                rank_cur: '目前等級', rank_max: '已達最高', next_diff: '差 {n} 升級'
+                rank_cur: '目前等級', rank_max: '最高等級', next_diff: '差 {n} 升級'
             },
             'zh-CN': {
-                title: '活动数据仪表板', subtitle: '查询每日下注数据与等级',
-                hero_label: '📅 最新单日下注', tier_title: '🏆 等级门槛',
-                tier_a_range: '当日 ≥ 20,000', tier_b_range: '当日 ≥ 10,000', tier_c_range: '当日 ≥ 5,000',
-                history_title: '📅 每日明细', table_date: '日期', table_amount: '下注总额',
+                title: '活动数据<br>仪表板', subtitle: '查询每日下注数据与等级',
+                hero_label: '📅 最新单日下注',
+                tier_title: '等级门槛', tier_a_range: '当日 ≥ 20,000', tier_b_range: '当日 ≥ 10,000', tier_c_range: '当日 ≥ 5,000',
+                history_title: '每日明细', table_date: '日期', table_amount: '下注总额',
                 footer_title: 'ℹ️ 注意事项', rule_1: '统计期间：11/30 ~ 12/02', rule_2: '数据每 1 分钟更新一次',
-                rank_cur: '当前等级', rank_max: '已达最高', next_diff: '差 {n} 升级'
+                rank_cur: '当前等级', rank_max: '最高等级', next_diff: '差 {n} 升级'
             },
             'en': {
-                title: 'Event Dashboard', subtitle: 'Daily bets & Tier status',
-                hero_label: '📅 Latest Daily Bet', tier_title: '🏆 Tier Thresholds',
-                tier_a_range: 'Daily ≥ 20,000', tier_b_range: 'Daily ≥ 10,000', tier_c_range: 'Daily ≥ 5,000',
-                history_title: '📅 Daily Breakdown', table_date: 'Date', table_amount: 'Total Bet',
-                footer_title: 'ℹ️ Info', rule_1: 'Period: 11/30 ~ 12/02', rule_2: 'Data updates every minute',
+                title: 'Event Data<br>Dashboard', subtitle: 'Daily bets & Tier status',
+                hero_label: '📅 Latest Daily Bet',
+                tier_title: 'Tiers', tier_a_range: 'Daily ≥ 20,000', tier_b_range: 'Daily ≥ 10,000', tier_c_range: 'Daily ≥ 5,000',
+                history_title: 'History', table_date: 'Date', table_amount: 'Total Bet',
+                footer_title: 'ℹ️ Info', rule_1: 'Period: 11/30 ~ 12/02', rule_2: 'Updates every minute',
                 rank_cur: 'Current Rank', rank_max: 'Max Tier', next_diff: '{n} to next'
             }
         };
 
         const app = {
             lang: 'zh-TW',
-            
             setLang: (l) => {
                 app.lang = l;
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
@@ -237,7 +385,7 @@
                 const t = TRANSLATIONS[l];
                 document.querySelectorAll('[data-i18n]').forEach(el => {
                     const k = el.getAttribute('data-i18n');
-                    if(t[k]) el.innerText = t[k];
+                    if(t[k]) el.innerHTML = t[k]; // innerHTML allow <br>
                 });
                 if(window.lastData) app.render(window.lastData);
             },
@@ -247,20 +395,14 @@
                 if (params.get('user_id')) return params.get('user_id');
                 const match = window.location.hash.match(/user_id=([a-fA-F0-9]{24})/);
                 if (match) return match[1];
-                
-                // *** 自動使用測試 ID ***
-                console.warn("No User ID found, using DEMO ID");
-                return DEMO_USER_ID; 
+                return DEMO_ID; // Fallback
             },
 
-            showError: (title, detail) => {
-                const box = document.getElementById('error-box');
-                box.style.display = 'block';
-                box.innerHTML = `<strong>⚠️ ${title}</strong><br>${detail}<br><br>API: ${API_BASE}`;
-                document.getElementById('main-content').style.opacity = '0.3';
-                document.getElementById('main-content').style.pointerEvents = 'none';
-                document.getElementById('userIdDisplay').style.color = 'red';
-                document.getElementById('userIdDisplay').innerText = "Error";
+            showError: (msg) => {
+                const toast = document.getElementById('error-toast');
+                toast.innerText = msg;
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 4000);
             },
 
             calcStatus: (amount) => {
@@ -274,46 +416,58 @@
                 window.lastData = data;
                 const t = TRANSLATIONS[app.lang];
                 const list = data.data || [];
-                
-                // Get latest data
                 const latest = list.length > 0 ? list[list.length - 1] : { total_bet: 0 };
                 const amount = latest.total_bet || 0;
 
-                // Hero Section
-                document.getElementById('val-bet-total').innerText = fmt(amount);
+                // 1. Hero Value
                 document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
+                document.getElementById('val-bet-total').innerText = fmt(amount);
 
-                // Progress
+                // 2. Progress
                 const st = app.calcStatus(amount);
                 document.getElementById('progress-bar').style.width = `${st.pct}%`;
-                document.getElementById('rank-status').innerText = `${t.rank_cur}: ${st.rank}`;
                 
-                const diffEl = document.getElementById('next-diff');
+                // 動態文字顏色處理
+                const rankHtml = st.rank !== 'N/A' 
+                    ? `<span style="color:var(--gold-main)">${st.rank}</span>` 
+                    : st.rank;
+                document.getElementById('rank-status').innerHTML = `${t.rank_cur}: ${rankHtml}`;
+
+                const nextEl = document.getElementById('next-diff');
                 if (st.next <= 0) {
-                    diffEl.innerText = t.rank_max;
-                    diffEl.style.color = 'var(--accent-gold)';
+                    nextEl.innerText = t.rank_max;
+                    nextEl.style.color = 'var(--gold-main)';
                 } else {
-                    diffEl.innerText = t.next_diff.replace('{n}', fmt(st.next));
-                    diffEl.style.color = '#888';
+                    nextEl.innerText = t.next_diff.replace('{n}', fmt(st.next));
+                    nextEl.style.color = 'var(--text-tertiary)';
                 }
 
-                // Tiers Highlight
+                // 3. Tiers Active State
                 document.querySelectorAll('.tier-item').forEach(el => el.classList.remove('active'));
                 if (amount >= 20000) document.getElementById('tier-A').classList.add('active');
                 else if (amount >= 10000) document.getElementById('tier-B').classList.add('active');
                 else if (amount >= 5000) document.getElementById('tier-C').classList.add('active');
 
-                // History Table
+                // 4. Table
                 const tbody = document.getElementById('history-tbody');
                 tbody.innerHTML = '';
                 if (list.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">No Record</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:30px; color:var(--text-tertiary);">No Record</td></tr>`;
                 } else {
                     [...list].reverse().forEach(row => {
                         const tr = document.createElement('tr');
                         const rSt = app.calcStatus(row.total_bet || 0);
-                        const badge = rSt.rank !== 'N/A' ? `<span class="rank-badge rank-${rSt.rank}">${rSt.rank}</span>` : '';
-                        tr.innerHTML = `<td>${row.date}</td><td class="col-amount">${fmt(row.total_bet)}${badge}</td>`;
+                        let dotColor = '#333';
+                        if(rSt.rank === 'A') dotColor = '#EAB308';
+                        else if(rSt.rank === 'B') dotColor = '#ccc';
+                        else if(rSt.rank === 'C') dotColor = '#666';
+
+                        const dot = rSt.rank !== 'N/A' ? `<span class="rank-tag-mini" style="background:${dotColor}"></span>` : '';
+
+                        tr.innerHTML = `
+                            <td>${row.date}</td>
+                            <td class="val-cell">${fmt(row.total_bet)}${dot}</td>
+                        `;
                         tbody.appendChild(tr);
                     });
                 }
@@ -322,34 +476,20 @@
             init: async () => {
                 app.setLang('zh-TW');
                 const userId = app.getUserId();
+                const displayId = userId === DEMO_ID ? "Demo Mode" : userId.substring(0,6) + "...";
                 
-                if (userId === DEMO_USER_ID) {
-                    document.getElementById('userIdDisplay').innerText = `ID: Demo User`;
-                } else {
-                    document.getElementById('userIdDisplay').innerText = `ID: ${userId.substring(0,6)}...`;
-                }
+                document.getElementById('userIdDisplay').innerText = displayId;
+                document.getElementById('debug-id').innerText = userId;
 
                 try {
-                    // API Call
-                    const url = `${API_BASE}/?user_id=${userId}`;
-                    console.log("Fetching:", url);
-                    
-                    const res = await fetch(url, { method: 'GET', credentials: 'omit' });
-                    
-                    if (!res.ok) {
-                        throw new Error(`HTTP ${res.status}`);
-                    }
-                    
+                    const res = await fetch(`${API_BASE}/?user_id=${userId}`);
+                    if (!res.ok) throw new Error("API Error");
                     const json = await res.json();
-                    if(json.error) {
-                        throw new Error(json.error);
-                    }
-                    
+                    if(json.error) throw new Error(json.error);
                     app.render(json);
-
                 } catch (e) {
-                    console.error("Fetch Error:", e);
-                    app.showError("Connection Failed", e.message);
+                    console.error(e);
+                    app.showError("Network Connection Failed");
                 }
             }
         };

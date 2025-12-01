@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Event Dashboard 2025</title>
+    
+    <!-- Google Fonts: 引入高品質字體 Inter (介面), JetBrains Mono (數據), Noto Sans (多語系) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* --- 核心色系：深邃 Cyberpunk 風格 --- */
+            --bg-body: #0B0E14;
+            --surface-glass: rgba(30, 35, 48, 0.85); /* 毛玻璃背景 */
+            --surface-solid: #1C212E;
+            --border-subtle: rgba(255, 255, 255, 0.12);
+            
+            /* --- 亮點色系 --- */
+            --accent-gold: #FACC15;
+            --accent-gold-dim: rgba(250, 204, 21, 0.15);
+            --accent-gold-glow: rgba(250, 204, 21, 0.35);
+            
+            --accent-green: #34D399;
+            --accent-green-dim: rgba(52, 211, 153, 0.15);
+            
+            /* --- 文字系統 --- */
+            --text-main: #FFFFFF;
+            --text-muted: #9CA3AF;
+            --text-dim: #6B7280;
+            --text-highlight: #F3F4F6;
+            
+            /* --- 介面變數 --- */
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
+        }
+
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+        body {
+            margin: 0;
+            padding: 20px 20px 80px 20px;
+            background-color: var(--bg-body);
+            font-family: 'Inter', 'Noto Sans TC', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+            color: var(--text-main);
+            /* 背景光暈特效 */
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(244, 63, 94, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 90%, rgba(250, 204, 21, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-size: 16px;
+        }
+
+        .dashboard-container {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px; 
+        }
+
+        /* --- Language Switcher --- */
+        .lang-switch-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn:active { transform: scale(0.95); }
+        .lang-btn.active { 
+            background: var(--accent-gold); 
+            color: #000; 
+            border-color: var(--accent-gold); 
+            font-weight: 800; 
+            box-shadow: 0 0 10px var(--accent-gold-glow); 
+        }
+
+        /* --- Header --- */
+        .promo-header { text-align: center; margin-bottom: 12px; }
+        .promo-title { 
+            margin: 0 0 10px 0; 
+            font-size: 32px; 
+            font-weight: 900; 
+            background: linear-gradient(135deg, #FFF 40%, var(--accent-gold) 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            letter-spacing: -0.5px; 
+            line-height: 1.2; 
+        }
+        .promo-subtitle { font-size: 14px; color: var(--text-muted); margin: 0 0 18px 0; line-height: 1.5; }
+        .user-id-display {
+            display: inline-block;
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
+
+        /* --- Common Card Style --- */
+        .card { 
+            background: var(--surface-glass); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px); 
+            border: 1px solid var(--border-subtle); 
+            border-radius: var(--radius-lg); 
+            overflow: hidden; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* --- Hero Card (今日重點數據) --- */
+        .hero-card { 
+            padding: 28px 24px; 
+            text-align: center; 
+            background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%); 
+            border: 1px solid rgba(250, 204, 21, 0.3); 
+            box-shadow: 0 0 50px -10px rgba(250, 204, 21, 0.15); 
+        }
+        .hero-label { font-size: 14px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+        
+        /* 核心數字樣式 */
+        .hero-value { 
+            font-size: 52px; 
+            font-weight: 800; 
+            color: var(--accent-gold); 
+            text-shadow: 0 0 30px var(--accent-gold-glow); 
+            margin: 0; 
+            line-height: 1; 
+            font-family: 'JetBrains Mono', monospace; 
+            letter-spacing: -2px; 
+        }
+
+        /* --- Progress Bar --- */
+        .progress-section { margin-top: 28px; text-align: left; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        .progress-track { height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--accent-gold), #FFF); 
+            width: 0%; 
+            border-radius: 10px; 
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            box-shadow: 0 0 15px var(--accent-gold-glow); 
+        }
+
+        /* --- Tier List (等級表) --- */
+        .section-title { 
+            font-size: 18px; 
+            font-weight: 700; 
+            color: var(--text-highlight); 
+            margin-top: 24px; 
+            margin-bottom: 16px; 
+            padding-left: 12px; 
+            border-left: 4px solid var(--accent-gold); 
+            line-height: 1.2; 
+        }
+
+        .tier-list { display: flex; flex-direction: column; gap: 10px; }
+        .tier-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--surface-solid); 
+            padding: 18px 20px; 
+            border-radius: var(--radius-sm); 
+            border: 1px solid transparent; 
+            transition: all 0.3s; 
+        }
+        /* 等級達成時的樣式 */
+        .tier-item.active { 
+            background: var(--accent-gold-dim); 
+            border-color: rgba(250, 204, 21, 0.4); 
+            transform: scale(1.01); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+        }
+        .tier-range { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+        .tier-rate { 
+            font-size: 18px; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            font-family: 'JetBrains Mono', monospace; 
+        }
+        .tier-item.active .tier-rate { color: var(--accent-gold); }
+
+        /* --- History Table (下注紀錄) --- */
+        .history-card { 
+            padding: 0; 
+            border: 1px solid var(--border-subtle); 
+            border-radius: var(--radius-lg);
+            overflow: hidden; 
+            background: var(--surface-glass);
+        }
+
+        .history-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 14px; 
+            text-align: left; 
+        }
+
+        .history-table th { 
+            background: rgba(255, 255, 255, 0.03); 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            padding: 14px 16px; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            border-bottom: 1px solid var(--border-subtle); 
+        }
+
+        .history-table td { 
+            padding: 16px 16px; 
+            border-bottom: 1px solid var(--border-subtle); 
+            color: var(--text-main); 
+            vertical-align: middle; 
+        }
+
+        .history-table tr:last-child td { border-bottom: none; }
+
+        .col-amount { 
+            text-align: right; 
+            font-family: 'JetBrains Mono', monospace; 
+            font-weight: 600; 
+            color: var(--text-highlight);
+            font-size: 15px;
+        }
+
+        /* 標籤樣式 */
+        .rank-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .rank-A { background: var(--accent-gold); color: #000; box-shadow: 0 0 10px var(--accent-gold-dim); }
+        .rank-B { background: rgba(255,255,255,0.2); color: #FFF; }
+        .rank-C { background: rgba(255,255,255,0.1); color: var(--text-muted); }
+
+        /* --- Footer --- */
+        .footer-rules { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle); color: var(--text-muted); }
+        .footer-title { font-size: 13px; font-weight: 700; color: var(--text-dim); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+        .rules-list { list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+        .rules-list li { position: relative; padding-left: 16px; margin-bottom: 8px; }
+        .rules-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-dim); }
+        .copyright { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-dim); opacity: 0.6; }
+
+        /* --- Utilities --- */
+        .skeleton { 
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%); 
+            background-size: 200% 100%; 
+            animation: pulse 1.5s infinite; 
+            color: transparent !important; 
+            border-radius: 4px; 
+            display: inline-block;
+            min-width: 60px;
+        }
+        .error-box { 
+            text-align: center; padding: 20px; color: #ff6b6b; background: rgba(255, 50, 50, 0.05); 
+            border-radius: var(--radius-md); border: 1px dashed rgba(255, 50, 50, 0.2); font-size: 14px; 
+        }
+
+        @keyframes pulse { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- 語言切換 -->
+        <div class="lang-switch-container">
+            <button class="lang-btn active" onclick="app.setLang('zh-TW')">繁</button>
+            <button class="lang-btn" onclick="app.setLang('zh-CN')">简</button>
+            <button class="lang-btn" onclick="app.setLang('en')">EN</button>
+            <button class="lang-btn" onclick="app.setLang('jp')">JP</button>
+        </div>
+
+        <!-- 標題區 -->
+        <header c

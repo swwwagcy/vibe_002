@@ -3,35 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#050505">
-    <title>VIP Event Dashboard</title>
+    <meta name="theme-color" content="#0F172A">
+    <title>Vibrant Event Dashboard</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Grotesk:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* --- 核心色系：深邃黑金 --- */
-            --bg-body: #050505;
-            --surface-glass: rgba(20, 20, 25, 0.75);
-            --surface-border: rgba(255, 255, 255, 0.08);
+            /* --- 核心色系：深邃星空紫 --- */
+            --bg-body: #0F172A; /* Slate 900 */
+            --surface-glass: rgba(30, 41, 59, 0.75); /* Slate 800 glass */
+            --surface-border: rgba(255, 255, 255, 0.1);
             
-            /* --- 品牌色 (流金) --- */
-            --gold-light: #FCEDA3;
-            --gold-main: #EAB308;
-            --gold-dark: #A16207;
+            /* --- 活力漸層 (Vibrant Gradients) --- */
+            --grad-primary: linear-gradient(135deg, #F472B6 0%, #A78BFA 100%); /* Pink to Purple */
+            --grad-accent: linear-gradient(135deg, #22D3EE 0%, #3B82F6 100%); /* Cyan to Blue */
+            --grad-glow: linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4);   /* RGB Bar */
+
+            /* --- 單色點綴 --- */
+            --color-pink: #F472B6;
+            --color-cyan: #22D3EE;
+            --color-purple: #A78BFA;
             
             /* --- 文字 --- */
-            --text-primary: #FFFFFF;
-            --text-secondary: #A1A1AA;
-            --text-tertiary: #52525B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
             
             /* --- 尺寸 --- */
             --radius-xl: 24px;
-            --radius-lg: 16px;
-            --radius-md: 8px;
+            --radius-md: 12px;
         }
 
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
@@ -39,21 +42,23 @@
         body {
             margin: 0; padding: 0; padding-bottom: env(safe-area-inset-bottom, 20px);
             background-color: var(--bg-body);
-            font-family: 'Inter', 'Noto Sans TC', sans-serif;
-            color: var(--text-primary);
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif; /* 改用更活潑的圓體字型 */
+            color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* --- 背景特效 (Aurora Background) --- */
-        .bg-glow {
+        /* --- 活力背景 (Mesh Gradient Animation) --- */
+        .bg-mesh {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
             background: 
-                radial-gradient(circle at 15% 15%, rgba(234, 179, 8, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 50% 90%, rgba(234, 179, 8, 0.05) 0%, transparent 50%);
-            filter: blur(60px);
+                radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            filter: blur(40px);
+            animation: pulse-bg 8s ease-in-out infinite alternate;
         }
+        @keyframes pulse-bg { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
 
         .container {
             max-width: 480px; margin: 0 auto; padding: 24px 20px 80px 20px;
@@ -61,141 +66,150 @@
         }
 
         /* --- Language Switcher --- */
-        .lang-switch {
-            position: absolute; top: 20px; right: 20px; z-index: 50; display: flex; gap: 6px;
-        }
+        .lang-switch { position: absolute; top: 20px; right: 20px; z-index: 50; display: flex; gap: 6px; }
         .lang-btn {
-            background: rgba(0,0,0,0.4); border: 1px solid var(--surface-border);
-            color: var(--text-secondary); padding: 6px 10px; border-radius: 20px;
-            font-size: 11px; font-weight: 600; cursor: pointer; backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.3); border: 1px solid var(--surface-border);
+            color: var(--text-muted); padding: 6px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: 700; cursor: pointer; backdrop-filter: blur(8px);
             transition: all 0.3s;
         }
         .lang-btn.active {
-            background: var(--gold-main); color: #000; border-color: var(--gold-main);
-            box-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
+            background: var(--color-cyan); color: #0F172A; border-color: var(--color-cyan);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
         }
 
         /* --- Header --- */
         .header { margin-top: 40px; margin-bottom: 12px; text-align: left; }
         .title {
-            font-size: 32px; font-weight: 800; margin: 0 0 8px 0; line-height: 1.1;
-            background: linear-gradient(135deg, #FFFFFF 30%, var(--gold-light) 70%, var(--gold-main) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 36px; font-weight: 800; margin: 0 0 8px 0; line-height: 1.1; letter-spacing: -1px;
+            background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.3));
         }
-        .subtitle { font-size: 14px; color: var(--text-secondary); margin: 0; }
+        .subtitle { font-size: 15px; color: var(--text-muted); margin: 0; font-weight: 500; }
         
         .user-pill {
-            display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
-            padding: 4px 10px; background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border);
-            border-radius: 99px; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-secondary);
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 16px;
+            padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 99px; font-size: 12px; font-family: 'Space Grotesk', monospace; color: var(--text-main);
         }
-        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; animation: pulse 2s infinite; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22D3EE; box-shadow: 0 0 10px #22D3EE; animation: pulse 1.5s infinite; }
 
-        /* --- Card System --- */
+        /* --- Card System (Holo Glass) --- */
         .card {
-            background: var(--surface-glass); backdrop-filter: blur(20px);
+            background: var(--surface-glass); backdrop-filter: blur(24px);
             border: 1px solid var(--surface-border); border-radius: var(--radius-xl);
             padding: 24px; position: relative; overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
         }
+        /* 卡片頂部彩虹光條 */
         .card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: var(--grad-glow); opacity: 0.8;
         }
 
         /* --- Hero Section --- */
-        .hero-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-bottom: 8px; }
-        .hero-value-container { display: flex; align-items: baseline; gap: 4px; margin-bottom: 24px; }
-        .hero-value {
-            font-family: 'JetBrains Mono', monospace; font-size: 48px; font-weight: 800;
-            background: linear-gradient(180deg, #FFFFFF 0%, var(--gold-light) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(234, 179, 8, 0.15);
+        .hero-label { 
+            font-size: 12px; text-transform: uppercase; letter-spacing: 1px; 
+            color: var(--color-pink); font-weight: 700; margin-bottom: 8px; 
+            display: flex; align-items: center; gap: 6px;
         }
-        .hero-unit { font-size: 14px; color: var(--text-tertiary); font-weight: 600; transform: translateY(-8px); }
+        .hero-value-container { display: flex; align-items: baseline; gap: 6px; margin-bottom: 24px; }
+        .hero-value {
+            font-family: 'Space Grotesk', sans-serif; font-size: 52px; font-weight: 700;
+            color: #FFF; text-shadow: 0 0 30px rgba(255,255,255,0.3);
+            letter-spacing: -1px;
+        }
+        .hero-unit { 
+            font-size: 14px; color: var(--color-cyan); font-weight: 700; transform: translateY(-8px); 
+            background: rgba(34, 211, 238, 0.1); padding: 2px 6px; border-radius: 4px;
+        }
 
         /* --- Progress Bar --- */
         .progress-box { position: relative; }
-        .progress-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary); }
-        .progress-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; font-weight: 600; color: var(--text-muted); }
+        .progress-track { height: 10px; background: rgba(0,0,0,0.3); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
         .progress-fill {
-            height: 100%; width: 0%; border-radius: 10px;
-            background: linear-gradient(90deg, var(--gold-dark), var(--gold-main));
-            box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
-            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            height: 100%; width: 0%; border-radius: 20px;
+            background: var(--grad-primary);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        /* 條紋動畫 */
+        .progress-fill::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
         }
 
         /* --- Tier List --- */
-        .section-title { font-size: 16px; font-weight: 700; margin: 8px 0 16px 0; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-        .section-icon { color: var(--gold-main); }
-        .tier-list { display: flex; flex-direction: column; gap: 8px; }
+        .section-title { font-size: 18px; font-weight: 700; margin: 10px 0 16px 0; color: #FFF; display: flex; align-items: center; gap: 8px; }
+        .section-icon { background: var(--grad-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .tier-list { display: flex; flex-direction: column; gap: 10px; }
         .tier-item {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03);
-            padding: 14px 18px; border-radius: var(--radius-lg); transition: all 0.3s;
+            background: rgba(15, 23, 42, 0.6); border: 1px solid var(--surface-border);
+            padding: 16px 20px; border-radius: var(--radius-md); transition: all 0.3s;
         }
         .tier-item.active {
-            background: rgba(234, 179, 8, 0.08); border-color: rgba(234, 179, 8, 0.3);
-            box-shadow: inset 0 0 20px rgba(234, 179, 8, 0.05);
+            background: rgba(236, 72, 153, 0.1); border-color: var(--color-pink);
+            transform: scale(1.02); box-shadow: 0 4px 20px rgba(236, 72, 153, 0.15);
         }
-        .tier-info { display: flex; flex-direction: column; gap: 2px; }
-        .tier-name { font-size: 14px; font-weight: 700; }
-        .tier-req { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+        .tier-name { font-size: 15px; font-weight: 700; color: #FFF; }
+        .tier-req { font-size: 12px; color: var(--text-muted); font-family: 'Space Grotesk', monospace; margin-top: 2px; }
         .tier-badge {
-            font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px;
-            background: rgba(255,255,255,0.05); color: var(--text-tertiary);
+            font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px;
+            background: rgba(255,255,255,0.08); color: var(--text-muted);
         }
-        .tier-item.active .tier-badge { background: var(--gold-main); color: #000; box-shadow: 0 2px 10px rgba(234, 179, 8, 0.3); }
+        .tier-item.active .tier-badge { 
+            background: var(--grad-primary); color: #FFF; box-shadow: 0 2px 10px rgba(236, 72, 153, 0.4);
+        }
 
-        /* --- History Table (Fixed Version) --- */
-        .history-card-custom {
-            padding: 0 !important; /* Remove card padding */
-            display: flex; flex-direction: column;
-        }
+        /* --- History Table (Clean) --- */
+        .history-card-custom { padding: 0 !important; display: flex; flex-direction: column; }
         .history-header-area { padding: 24px 24px 10px 24px; }
         
         .table-container { width: 100%; overflow-x: auto; }
         .history-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         
         .history-table th {
-            text-align: left; font-size: 11px; text-transform: uppercase; color: var(--text-tertiary);
-            padding: 14px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-weight: 600; background: rgba(255, 255, 255, 0.02);
+            text-align: left; font-size: 11px; text-transform: uppercase; color: var(--text-muted);
+            padding: 14px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 700; letter-spacing: 0.5px;
         }
         .history-table td {
-            padding: 16px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-secondary); font-size: 14px; vertical-align: middle;
+            padding: 16px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-main); font-size: 14px; vertical-align: middle;
         }
         .history-table tr:last-child td { border-bottom: none; }
 
-        /* Value Cell Alignment */
-        .val-cell-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-        .val-text { font-family: 'JetBrains Mono', monospace; color: var(--text-primary); font-weight: 600; font-size: 15px; }
-        .rank-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .val-cell-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+        .val-text { font-family: 'Space Grotesk', monospace; color: var(--color-cyan); font-weight: 700; font-size: 16px; }
+        .rank-dot { width: 8px; height: 8px; border-radius: 2px; transform: rotate(45deg); /* 鑽石形狀 */ flex-shrink: 0; }
 
         /* --- Footer --- */
-        .footer { margin-top: 20px; border-top: 1px solid var(--surface-border); padding-top: 24px; color: var(--text-tertiary); font-size: 12px; line-height: 1.6; }
+        .footer { margin-top: 20px; border-top: 1px solid var(--surface-border); padding-top: 24px; color: var(--text-muted); font-size: 13px; line-height: 1.6; }
         .footer ul { padding-left: 18px; margin: 12px 0; }
-        
-        /* --- Animation & Skeleton --- */
-        @keyframes pulse { 0% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } 50% { opacity: 1; box-shadow: 0 0 10px #10B981; } 100% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } }
+        .debug-id { font-family: 'Space Grotesk', monospace; opacity: 0.3; text-align: center; margin-top: 20px; font-size: 11px; }
+
+        /* --- Animations --- */
+        @keyframes pulse { 0% { opacity: 0.5; box-shadow: 0 0 0 #22D3EE; } 50% { opacity: 1; box-shadow: 0 0 12px #22D3EE; } 100% { opacity: 0.5; box-shadow: 0 0 0 #22D3EE; } }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         
         .skeleton {
-            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
             background-size: 200% 100%; animation: shimmer 1.5s infinite;
-            color: transparent !important; border-radius: 4px; display: inline-block;
+            color: transparent !important; border-radius: 6px; display: inline-block;
         }
-        
         .error-toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(220, 38, 38, 0.9); color: white; padding: 12px 20px;
-            border-radius: 50px; font-size: 13px; display: none; z-index: 100;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #F43F5E; color: white; padding: 12px 24px; font-weight: 600;
+            border-radius: 12px; font-size: 13px; display: none; z-index: 100; box-shadow: 0 10px 30px rgba(244, 63, 94, 0.4);
         }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
+    <div class="bg-mesh"></div>
 
     <!-- Language -->
     <div class="lang-switch">
@@ -217,7 +231,10 @@
 
         <!-- Main Card -->
         <div class="card">
-            <div class="hero-label" data-i18n="hero_label">📅 最新單日下注</div>
+            <div class="hero-label">
+                <span>📅</span>
+                <span data-i18n="hero_label">最新單日下注</span>
+            </div>
             <div class="hero-value-container">
                 <div class="hero-value skeleton" id="val-bet-total">00,000</div>
                 <span class="hero-unit">PTS</span>
@@ -226,7 +243,7 @@
             <div class="progress-box">
                 <div class="progress-info">
                     <span id="rank-status">Loading...</span>
-                    <span id="next-diff" style="color: var(--text-tertiary)">---</span>
+                    <span id="next-diff" style="color: var(--text-muted)">---</span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="progress-bar"></div>
@@ -237,7 +254,7 @@
         <!-- Tier List -->
         <div>
             <div class="section-title">
-                <span class="section-icon">🏆</span> 
+                <span class="section-icon">⚡</span> 
                 <span data-i18n="tier_title">等級門檻</span>
             </div>
             <div class="tier-list">
@@ -265,11 +282,11 @@
             </div>
         </div>
 
-        <!-- History Table (Corrected Structure) -->
+        <!-- History Table -->
         <div class="card history-card-custom">
             <div class="history-header-area">
                 <div class="section-title" style="margin: 0;">
-                    <span class="section-icon">📅</span> 
+                    <span class="section-icon">📜</span> 
                     <span data-i18n="history_title">每日明細</span>
                 </div>
             </div>
@@ -282,7 +299,7 @@
                         </tr>
                     </thead>
                     <tbody id="history-tbody">
-                        <tr><td colspan="2" style="text-align:center; padding:30px; color:var(--text-tertiary);">Loading Data...</td></tr>
+                        <tr><td colspan="2" style="text-align:center; padding:30px; color:var(--text-muted);">Loading Data...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -290,12 +307,12 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <strong style="color:var(--text-secondary)" data-i18n="footer_title">ℹ️ 注意事項</strong>
+            <strong style="color:#FFF" data-i18n="footer_title">ℹ️ 注意事項</strong>
             <ul>
                 <li data-i18n="rule_1">統計期間：11/30 ~ 12/02</li>
                 <li data-i18n="rule_2">數據每 1 分鐘更新一次</li>
             </ul>
-            <div style="opacity: 0.4; text-align: center; margin-top: 20px;">ID: <span id="debug-id">--</span></div>
+            <div class="debug-id">ID: <span id="debug-id">--</span></div>
         </footer>
     </div>
 
@@ -311,7 +328,7 @@
         const TRANSLATIONS = {
             'zh-TW': {
                 title: '活動數據<br>儀表板', subtitle: '查詢每日下注數據與等級',
-                hero_label: '📅 最新單日下注',
+                hero_label: '最新單日下注',
                 tier_title: '等級門檻', tier_a_range: '當日 ≥ 20,000', tier_b_range: '當日 ≥ 10,000', tier_c_range: '當日 ≥ 5,000',
                 history_title: '每日明細', table_date: '日期', table_amount: '下注總額',
                 footer_title: 'ℹ️ 注意事項', rule_1: '統計期間：11/30 ~ 12/02', rule_2: '數據每 1 分鐘更新一次',
@@ -319,7 +336,7 @@
             },
             'zh-CN': {
                 title: '活动数据<br>仪表板', subtitle: '查询每日下注数据与等级',
-                hero_label: '📅 最新单日下注',
+                hero_label: '最新单日下注',
                 tier_title: '等级门槛', tier_a_range: '当日 ≥ 20,000', tier_b_range: '当日 ≥ 10,000', tier_c_range: '当日 ≥ 5,000',
                 history_title: '每日明细', table_date: '日期', table_amount: '下注总额',
                 footer_title: 'ℹ️ 注意事项', rule_1: '统计期间：11/30 ~ 12/02', rule_2: '数据每 1 分钟更新一次',
@@ -327,7 +344,7 @@
             },
             'en': {
                 title: 'Event Data<br>Dashboard', subtitle: 'Daily bets & Tier status',
-                hero_label: '📅 Latest Daily Bet',
+                hero_label: 'Latest Daily Bet',
                 tier_title: 'Tiers', tier_a_range: 'Daily ≥ 20,000', tier_b_range: 'Daily ≥ 10,000', tier_c_range: 'Daily ≥ 5,000',
                 history_title: 'History', table_date: 'Date', table_amount: 'Total Bet',
                 footer_title: 'ℹ️ Info', rule_1: 'Period: 11/30 ~ 12/02', rule_2: 'Updates every minute',
@@ -388,16 +405,16 @@
                 const st = app.calcStatus(amount);
                 document.getElementById('progress-bar').style.width = `${st.pct}%`;
                 
-                const rankHtml = st.rank !== 'N/A' ? `<span style="color:var(--gold-main)">${st.rank}</span>` : st.rank;
+                const rankHtml = st.rank !== 'N/A' ? `<span style="color:#F472B6; font-weight:800;">${st.rank}</span>` : st.rank;
                 document.getElementById('rank-status').innerHTML = `${t.rank_cur}: ${rankHtml}`;
 
                 const nextEl = document.getElementById('next-diff');
                 if (st.next <= 0) {
                     nextEl.innerText = t.rank_max;
-                    nextEl.style.color = 'var(--gold-main)';
+                    nextEl.style.color = '#F472B6';
                 } else {
                     nextEl.innerText = t.next_diff.replace('{n}', fmt(st.next));
-                    nextEl.style.color = 'var(--text-tertiary)';
+                    nextEl.style.color = 'var(--text-muted)';
                 }
 
                 // Tiers
@@ -410,17 +427,17 @@
                 const tbody = document.getElementById('history-tbody');
                 tbody.innerHTML = '';
                 if (list.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:30px; color:var(--text-tertiary);">No Record</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:30px; color:var(--text-muted);">No Record</td></tr>`;
                 } else {
                     [...list].reverse().forEach(row => {
                         const tr = document.createElement('tr');
                         const rSt = app.calcStatus(row.total_bet || 0);
                         
-                        let dotColor = 'transparent';
+                        let dotColor = 'rgba(255,255,255,0.1)';
                         let boxShadow = 'none';
-                        if (rSt.rank === 'A') { dotColor = '#EAB308'; boxShadow = '0 0 8px rgba(234, 179, 8, 0.6)'; }
-                        else if (rSt.rank === 'B') { dotColor = '#A1A1AA'; }
-                        else if (rSt.rank === 'C') { dotColor = '#52525B'; }
+                        if (rSt.rank === 'A') { dotColor = '#F472B6'; boxShadow = '0 0 10px #F472B6'; }
+                        else if (rSt.rank === 'B') { dotColor = '#22D3EE'; boxShadow = '0 0 10px #22D3EE'; }
+                        else if (rSt.rank === 'C') { dotColor = '#A78BFA'; }
 
                         tr.innerHTML = `
                             <td>${row.date}</td>
@@ -452,7 +469,7 @@
                     app.render(json);
                 } catch (e) {
                     console.error(e);
-                    app.showError("Network Connection Failed");
+                    app.showError("Connect Failed: Retrying...");
                 }
             }
         };

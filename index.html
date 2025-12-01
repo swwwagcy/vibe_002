@@ -15,24 +15,18 @@
         :root {
             /* --- 核心色系：深邃黑金 --- */
             --bg-body: #050505;
-            --surface-glass: rgba(20, 20, 25, 0.65);
+            --surface-glass: rgba(20, 20, 25, 0.75);
             --surface-border: rgba(255, 255, 255, 0.08);
-            --surface-highlight: rgba(255, 255, 255, 0.12);
             
             /* --- 品牌色 (流金) --- */
             --gold-light: #FCEDA3;
-            --gold-main: #EAB308; /* Tailwind Yellow-500 */
+            --gold-main: #EAB308;
             --gold-dark: #A16207;
-            
-            /* --- 狀態色 --- */
-            --rank-a-bg: linear-gradient(135deg, #FCEDA3 0%, #EAB308 100%);
-            --rank-b-bg: rgba(255, 255, 255, 0.15);
-            --rank-c-bg: rgba(255, 255, 255, 0.08);
             
             /* --- 文字 --- */
             --text-primary: #FFFFFF;
-            --text-secondary: #A1A1AA; /* Zinc-400 */
-            --text-tertiary: #52525B;  /* Zinc-600 */
+            --text-secondary: #A1A1AA;
+            --text-tertiary: #52525B;
             
             /* --- 尺寸 --- */
             --radius-xl: 24px;
@@ -43,9 +37,7 @@
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0;
-            padding: 0;
-            padding-bottom: env(safe-area-inset-bottom, 20px);
+            margin: 0; padding: 0; padding-bottom: env(safe-area-inset-bottom, 20px);
             background-color: var(--bg-body);
             font-family: 'Inter', 'Noto Sans TC', sans-serif;
             color: var(--text-primary);
@@ -60,73 +52,52 @@
                 radial-gradient(circle at 15% 15%, rgba(234, 179, 8, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
                 radial-gradient(circle at 50% 90%, rgba(234, 179, 8, 0.05) 0%, transparent 50%);
-            filter: blur(40px);
+            filter: blur(60px);
         }
 
         .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 24px 20px 80px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            max-width: 480px; margin: 0 auto; padding: 24px 20px 80px 20px;
+            display: flex; flex-direction: column; gap: 24px;
         }
 
         /* --- Language Switcher --- */
         .lang-switch {
-            position: absolute; top: 20px; right: 20px; z-index: 50;
-            display: flex; gap: 6px;
+            position: absolute; top: 20px; right: 20px; z-index: 50; display: flex; gap: 6px;
         }
         .lang-btn {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--surface-border);
-            color: var(--text-secondary);
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(0,0,0,0.4); border: 1px solid var(--surface-border);
+            color: var(--text-secondary); padding: 6px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; cursor: pointer; backdrop-filter: blur(8px);
+            transition: all 0.3s;
         }
         .lang-btn.active {
-            background: var(--gold-main);
-            color: #000;
-            border-color: var(--gold-main);
+            background: var(--gold-main); color: #000; border-color: var(--gold-main);
             box-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
-            transform: translateY(-1px);
         }
 
         /* --- Header --- */
-        .header { margin-top: 40px; margin-bottom: 12px; text-align: left; position: relative; }
+        .header { margin-top: 40px; margin-bottom: 12px; text-align: left; }
         .title {
-            font-size: 32px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.02em; line-height: 1.1;
-            /* 流金文字特效 */
+            font-size: 32px; font-weight: 800; margin: 0 0 8px 0; line-height: 1.1;
             background: linear-gradient(135deg, #FFFFFF 30%, var(--gold-light) 70%, var(--gold-main) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .subtitle { font-size: 14px; color: var(--text-secondary); margin: 0; font-weight: 400; }
+        .subtitle { font-size: 14px; color: var(--text-secondary); margin: 0; }
         
         .user-pill {
-            display: inline-flex; align-items: center; gap: 6px;
-            margin-top: 12px; padding: 4px 10px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border);
+            display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
+            padding: 4px 10px; background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border);
             border-radius: 99px; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-secondary);
         }
-        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; animation: pulse-green 2s infinite; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; animation: pulse 2s infinite; }
 
-        /* --- Card System (Glassmorphism 2.0) --- */
+        /* --- Card System --- */
         .card {
-            background: var(--surface-glass);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--surface-border);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border-radius: var(--radius-xl);
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
+            background: var(--surface-glass); backdrop-filter: blur(20px);
+            border: 1px solid var(--surface-border); border-radius: var(--radius-xl);
+            padding: 24px; position: relative; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-        /* 卡片頂部亮光線條，增加立體感 */
         .card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
@@ -146,95 +117,84 @@
         /* --- Progress Bar --- */
         .progress-box { position: relative; }
         .progress-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary); }
-        .progress-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; }
         .progress-fill {
             height: 100%; width: 0%; border-radius: 10px;
             background: linear-gradient(90deg, var(--gold-dark), var(--gold-main));
-            position: relative;
             box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
             transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        /* 流光動畫 */
-        .progress-fill::after {
-            content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transform: translateX(-100%);
-            animation: shimmer 2s infinite;
         }
 
         /* --- Tier List --- */
         .section-title { font-size: 16px; font-weight: 700; margin: 8px 0 16px 0; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
         .section-icon { color: var(--gold-main); }
-
         .tier-list { display: flex; flex-direction: column; gap: 8px; }
         .tier-item {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.03);
-            padding: 14px 18px; border-radius: var(--radius-lg);
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03);
+            padding: 14px 18px; border-radius: var(--radius-lg); transition: all 0.3s;
         }
         .tier-item.active {
-            background: rgba(234, 179, 8, 0.08);
-            border-color: rgba(234, 179, 8, 0.3);
+            background: rgba(234, 179, 8, 0.08); border-color: rgba(234, 179, 8, 0.3);
             box-shadow: inset 0 0 20px rgba(234, 179, 8, 0.05);
         }
         .tier-info { display: flex; flex-direction: column; gap: 2px; }
-        .tier-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+        .tier-name { font-size: 14px; font-weight: 700; }
         .tier-req { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
         .tier-badge {
             font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px;
             background: rgba(255,255,255,0.05); color: var(--text-tertiary);
         }
-        .tier-item.active .tier-badge {
-            background: var(--gold-main); color: #000; box-shadow: 0 2px 10px rgba(234, 179, 8, 0.3);
-        }
+        .tier-item.active .tier-badge { background: var(--gold-main); color: #000; box-shadow: 0 2px 10px rgba(234, 179, 8, 0.3); }
 
-        /* --- History Table --- */
-        .table-wrapper { margin: 0 -24px -24px -24px; } /* 讓表格貼齊卡片邊緣 */
-        .history-table { width: 100%; border-collapse: collapse; }
+        /* --- History Table (Fixed Version) --- */
+        .history-card-custom {
+            padding: 0 !important; /* Remove card padding */
+            display: flex; flex-direction: column;
+        }
+        .history-header-area { padding: 24px 24px 10px 24px; }
+        
+        .table-container { width: 100%; overflow-x: auto; }
+        .history-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        
         .history-table th {
             text-align: left; font-size: 11px; text-transform: uppercase; color: var(--text-tertiary);
-            padding: 12px 24px; border-bottom: 1px solid var(--surface-border); font-weight: 600;
+            padding: 14px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600; background: rgba(255, 255, 255, 0.02);
         }
         .history-table td {
-            padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.02);
-            color: var(--text-secondary); font-size: 14px;
+            padding: 16px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary); font-size: 14px; vertical-align: middle;
         }
         .history-table tr:last-child td { border-bottom: none; }
-        .val-cell { text-align: right; font-family: 'JetBrains Mono', monospace; color: var(--text-primary); font-weight: 600; }
-        
-        .rank-tag-mini {
-            display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-left: 8px; vertical-align: middle;
-        }
+
+        /* Value Cell Alignment */
+        .val-cell-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+        .val-text { font-family: 'JetBrains Mono', monospace; color: var(--text-primary); font-weight: 600; font-size: 15px; }
+        .rank-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
         /* --- Footer --- */
-        .footer { 
-            margin-top: 20px; border-top: 1px solid var(--surface-border); padding-top: 24px;
-            color: var(--text-tertiary); font-size: 12px; line-height: 1.6;
-        }
+        .footer { margin-top: 20px; border-top: 1px solid var(--surface-border); padding-top: 24px; color: var(--text-tertiary); font-size: 12px; line-height: 1.6; }
         .footer ul { padding-left: 18px; margin: 12px 0; }
-        .footer li { margin-bottom: 6px; }
-
-        /* --- Skeleton & Animations --- */
-        @keyframes shimmer { 100% { transform: translateX(100%); } }
-        @keyframes pulse-green { 0% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } 50% { opacity: 1; box-shadow: 0 0 10px #10B981; } 100% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } }
+        
+        /* --- Animation & Skeleton --- */
+        @keyframes pulse { 0% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } 50% { opacity: 1; box-shadow: 0 0 10px #10B981; } 100% { opacity: 0.5; box-shadow: 0 0 0 #10B981; } }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         
         .skeleton {
             background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
             background-size: 200% 100%; animation: shimmer 1.5s infinite;
             color: transparent !important; border-radius: 4px; display: inline-block;
         }
+        
         .error-toast {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: rgba(220, 38, 38, 0.9); color: white; padding: 12px 20px;
-            border-radius: 50px; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: none; z-index: 100; backdrop-filter: blur(4px);
+            border-radius: 50px; font-size: 13px; display: none; z-index: 100;
         }
     </style>
 </head>
 <body>
-
     <div class="bg-glow"></div>
 
     <!-- Language -->
@@ -262,7 +222,6 @@
                 <div class="hero-value skeleton" id="val-bet-total">00,000</div>
                 <span class="hero-unit">PTS</span>
             </div>
-
             <!-- Progress -->
             <div class="progress-box">
                 <div class="progress-info">
@@ -306,18 +265,20 @@
             </div>
         </div>
 
-        <!-- History -->
-        <div class="card" style="padding: 24px 24px 0 24px;">
-            <div class="section-title" style="margin-top:0;">
-                <span class="section-icon">📅</span> 
-                <span data-i18n="history_title">每日明細</span>
+        <!-- History Table (Corrected Structure) -->
+        <div class="card history-card-custom">
+            <div class="history-header-area">
+                <div class="section-title" style="margin: 0;">
+                    <span class="section-icon">📅</span> 
+                    <span data-i18n="history_title">每日明細</span>
+                </div>
             </div>
-            <div class="table-wrapper">
+            <div class="table-container">
                 <table class="history-table">
                     <thead>
                         <tr>
-                            <th data-i18n="table_date">日期</th>
-                            <th style="text-align: right;" data-i18n="table_amount">金額</th>
+                            <th style="width: 40%;" data-i18n="table_date">日期</th>
+                            <th style="width: 60%; text-align: right;" data-i18n="table_amount">金額</th>
                         </tr>
                     </thead>
                     <tbody id="history-tbody">
@@ -338,7 +299,7 @@
         </footer>
     </div>
 
-    <!-- Error Toast -->
+    <!-- Toast -->
     <div id="error-toast" class="error-toast">Connection Error</div>
 
     <script>
@@ -385,7 +346,7 @@
                 const t = TRANSLATIONS[l];
                 document.querySelectorAll('[data-i18n]').forEach(el => {
                     const k = el.getAttribute('data-i18n');
-                    if(t[k]) el.innerHTML = t[k]; // innerHTML allow <br>
+                    if(t[k]) el.innerHTML = t[k];
                 });
                 if(window.lastData) app.render(window.lastData);
             },
@@ -395,7 +356,7 @@
                 if (params.get('user_id')) return params.get('user_id');
                 const match = window.location.hash.match(/user_id=([a-fA-F0-9]{24})/);
                 if (match) return match[1];
-                return DEMO_ID; // Fallback
+                return DEMO_ID;
             },
 
             showError: (msg) => {
@@ -419,18 +380,15 @@
                 const latest = list.length > 0 ? list[list.length - 1] : { total_bet: 0 };
                 const amount = latest.total_bet || 0;
 
-                // 1. Hero Value
+                // Hero
                 document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
                 document.getElementById('val-bet-total').innerText = fmt(amount);
 
-                // 2. Progress
+                // Progress
                 const st = app.calcStatus(amount);
                 document.getElementById('progress-bar').style.width = `${st.pct}%`;
                 
-                // 動態文字顏色處理
-                const rankHtml = st.rank !== 'N/A' 
-                    ? `<span style="color:var(--gold-main)">${st.rank}</span>` 
-                    : st.rank;
+                const rankHtml = st.rank !== 'N/A' ? `<span style="color:var(--gold-main)">${st.rank}</span>` : st.rank;
                 document.getElementById('rank-status').innerHTML = `${t.rank_cur}: ${rankHtml}`;
 
                 const nextEl = document.getElementById('next-diff');
@@ -442,13 +400,13 @@
                     nextEl.style.color = 'var(--text-tertiary)';
                 }
 
-                // 3. Tiers Active State
+                // Tiers
                 document.querySelectorAll('.tier-item').forEach(el => el.classList.remove('active'));
                 if (amount >= 20000) document.getElementById('tier-A').classList.add('active');
                 else if (amount >= 10000) document.getElementById('tier-B').classList.add('active');
                 else if (amount >= 5000) document.getElementById('tier-C').classList.add('active');
 
-                // 4. Table
+                // Table
                 const tbody = document.getElementById('history-tbody');
                 tbody.innerHTML = '';
                 if (list.length === 0) {
@@ -457,16 +415,21 @@
                     [...list].reverse().forEach(row => {
                         const tr = document.createElement('tr');
                         const rSt = app.calcStatus(row.total_bet || 0);
-                        let dotColor = '#333';
-                        if(rSt.rank === 'A') dotColor = '#EAB308';
-                        else if(rSt.rank === 'B') dotColor = '#ccc';
-                        else if(rSt.rank === 'C') dotColor = '#666';
-
-                        const dot = rSt.rank !== 'N/A' ? `<span class="rank-tag-mini" style="background:${dotColor}"></span>` : '';
+                        
+                        let dotColor = 'transparent';
+                        let boxShadow = 'none';
+                        if (rSt.rank === 'A') { dotColor = '#EAB308'; boxShadow = '0 0 8px rgba(234, 179, 8, 0.6)'; }
+                        else if (rSt.rank === 'B') { dotColor = '#A1A1AA'; }
+                        else if (rSt.rank === 'C') { dotColor = '#52525B'; }
 
                         tr.innerHTML = `
                             <td>${row.date}</td>
-                            <td class="val-cell">${fmt(row.total_bet)}${dot}</td>
+                            <td>
+                                <div class="val-cell-wrapper">
+                                    <span class="val-text">${fmt(row.total_bet)}</span>
+                                    <div class="rank-dot" style="background:${dotColor}; box-shadow:${boxShadow};"></div>
+                                </div>
+                            </td>
                         `;
                         tbody.appendChild(tr);
                     });
